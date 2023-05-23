@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import { useRouter } from 'vue-router'
 import ActivityList from '../components/ActivityList.vue'
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores';
 
 /*const gridView = 0;
 const listView = 1;
@@ -14,6 +16,10 @@ const viewMode = ref(0);*/
         { id: 4, name: 'Ejecución', icon: 'mdi mdi-cog-play-outline', total_request: 0 },
         { id: 5, name: 'Conclusión', icon: 'mdi-playlist-check', total_request: 7 },
       ]);*/
+
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 const router = useRouter();
 const paymentDialog = ref(false);
@@ -40,7 +46,8 @@ const employeeId = ref(null);
       </div>
       <div class="ma-1 pa-1">
         <v-btn-group density="compact">
-          <v-btn @click="paymentDialog = true" rounded="lg" color="blue-darken-2" prepend-icon="mdi-plus"> Nuevo ajuste</v-btn>
+          <v-btn v-if="user.perfil.id==1" 
+          @click="paymentDialog = true" rounded="lg" color="blue-darken-2" prepend-icon="mdi-plus"> Nuevo ajuste</v-btn>
         </v-btn-group>
       </div>
     </div>

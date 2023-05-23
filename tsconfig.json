@@ -4,6 +4,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "noImplicitAny": false,
     "paths": {
       "@/*": ["./src/*"]
     },

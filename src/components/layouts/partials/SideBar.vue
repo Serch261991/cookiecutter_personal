@@ -9,7 +9,7 @@ const { user } = storeToRefs(authStore);
 const drawer = ref(true);
 const rail = ref(false);
 const menuItems = ref([
-        { id: 1, title: 'Inicio', icon: 'mdi-home', route: '/' },
+        { id: 1, title: 'Inicio', icon: 'mdi-home', route: '/main' },
         //{ id: 2, title: 'Ajuste de Pensiones PM', icon: 'mdi-calculator', route: '/about' },
         //{ id: 3, title: 'Movimientos de Personal', icon: 'mdi-human-capacity-increase', route: '/home' },
       ])

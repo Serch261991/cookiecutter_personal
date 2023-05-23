@@ -3,7 +3,11 @@ import { ref, onBeforeMount } from "vue";
 import type { Ref } from 'vue'
 import FileService from "@/services/FileService";
 import type { AppFile } from "@/services/FileService/types";
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores';
 
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 const props = withDefaults(
   defineProps<{
     typeId: number,
@@ -122,8 +126,8 @@ onBeforeMount(() => {
 })
 </script>
 
-<template v-if="activityId==1">
-  <div class="w-50 ma-5" style="max-width: 500px">
+<template>
+  <div v-if="user.perfil.id==1" class="w-50 ma-5" style="max-width: 500px">
     <form density="compact">
       <v-file-input
         accept="application/pdf"
@@ -180,7 +184,7 @@ onBeforeMount(() => {
         <v-list-item-subtitle>
           <strong v-if="item.key">Folio: {{item.key}}</strong>
         </v-list-item-subtitle>
-        <template v-if="activityId>1" v-slot:prepend>
+        <template v-if="user.perf" v-slot:prepend>
           <v-icon v-if="item.validationFlag=='S'" icon="mdi-check-bold" color="success" />
           <v-icon v-if="item.validationFlag=='P'" icon="mdi-information-outline" color="warning" />
           <v-icon v-if="item.validationFlag=='N'" icon="mdi-close-thick" color="error" />

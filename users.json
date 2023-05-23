@@ -1,10 +1,10 @@
 [
     {
-        "ficha": 609089,
-        "nombre": "Sergio Ivan",
+        "ficha": 328255,
+        "nombre": "BENAVIDES GONZALEZ LILIANA",
         "perfil": {
             "id": "1",
-            "nombre": "Autorizador",
+            "nombre": "Operador",
             "rol": [
                 {
                     "id": 2,
@@ -18,11 +18,95 @@
         }
     },
     {
-        "ficha": 602290,
-        "nombre": "Luis Mario",
+        "ficha": 452717,
+        "nombre": "VERDUGO OJEDA NORMA",
         "perfil": {
-            "id": "0",
-            "nombre": "Administrador",
+            "id": "1",
+            "nombre": "Operador",
+            "rol": [
+                {
+                    "id": 1,
+                    "nombre":"Editar total"
+                }
+            ]
+        }
+    },
+    {
+        "ficha": 452709,
+        "nombre": "ORTEGA BURGOS EMILIO",
+        "perfil": {
+            "id": "2",
+            "nombre": "Jefe del Departamento del CA",
+            "rol": [
+                {
+                    "id": 1,
+                    "nombre":"Editar total"
+                }
+            ]
+        }
+    },
+    {
+        "ficha": 399417,
+        "nombre": "RUIZ OROZCO HUANIMBAN BERENICE",
+        "perfil": {
+            "id": "3",
+            "nombre": "Enlace de la SAP del CA",
+            "rol": [
+                {
+                    "id": 1,
+                    "nombre":"Editar total"
+                }
+            ]
+        }
+    },
+    {
+        "ficha": 464482,
+        "nombre": "JORGE RAMON PEREZ VIDAL",
+        "perfil": {
+            "id": "4",
+            "nombre": "Subgerente de la SAP del CA",
+            "rol": [
+                {
+                    "id": 1,
+                    "nombre":"Editar total"
+                }
+            ]
+        }
+    },
+    {
+        "ficha": 117929,
+        "nombre": "SANCHEZ MARES JOSE LUIS",
+        "perfil": {
+            "id": "5",
+            "nombre": "Subgerencia de Proceso Financiero",
+            "rol": [
+                {
+                    "id": 1,
+                    "nombre":"Editar total"
+                }
+            ]
+        }
+    },
+    {
+        "ficha": 343720,
+        "nombre": "ZALDIVAR ELIZALDE ANA LUISA",
+        "perfil": {
+            "id": "6",
+            "nombre": "Subgerencia de Operación",
+            "rol": [
+                {
+                    "id": 1,
+                    "nombre":"Editar total"
+                }
+            ]
+        }
+    },
+    {
+        "ficha": 883970,
+        "nombre": "MARTINEZ TERAN JONAS",
+        "perfil": {
+            "id": "6",
+            "nombre": "Subgerencia de Operación",
             "rol": [
                 {
                     "id": 1,

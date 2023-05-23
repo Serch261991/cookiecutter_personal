@@ -11,6 +11,11 @@ import PaymentConceptService from '@/services/PaymentConceptService'
 import type { PaymentConceptData } from '@/services/PaymentConceptService/types'
 import BeneficiaryPMService from '@/services/BeneficiaryPMService'
 import type { BeneficiaryPmData } from '@/services/BeneficiaryPMService/types'
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores';
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 const router = useRouter();
 const route = useRoute();
@@ -314,6 +319,7 @@ onBeforeMount(() => {
                   v-model="fixPaymentRequest.designatedEmployeeId"
                   append-inner-icon="mdi-magnify"
                   @click:append-inner="getDesignatedEmployeeName()"
+                  :readonly="!(user.perfil.id==1)"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
@@ -332,12 +338,13 @@ onBeforeMount(() => {
                   density="comfortable"
                   required
                   v-model="fixPaymentRequest.designatedEmployeeAddress"
+                  :readonly="!(user.perfil.id==1)"
                 ></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" md="2">
-                <v-btn 
+                <v-btn v-if="user.perfil.id==1"
                 density="compact"
                 @click="saveDesignatedEmployee()" 
                 color="blue-darken-2" 

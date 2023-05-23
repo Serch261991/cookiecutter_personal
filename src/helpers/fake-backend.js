@@ -1,5 +1,4 @@
 export { fakeBackend };
-    import { number } from 'yup';
 import usersJson from '../../users.json' assert { type: 'json' };;
 import { ref } from 'vue'
 
