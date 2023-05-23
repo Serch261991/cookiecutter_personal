@@ -1,0 +1,8 @@
+import http from "@/http/HttpClient";
+
+export default class ActivityService{
+
+    getAll() {
+        return http.get(`/Activity/actividades/`);
+    }
+}
