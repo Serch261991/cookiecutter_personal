@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { storeToRefs } from 'pinia';
 
+import { useAuthStore } from '@/stores';
+
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 const drawer = ref(true);
 const rail = ref(false);
 const menuItems = ref([
@@ -8,7 +13,6 @@ const menuItems = ref([
         //{ id: 2, title: 'Ajuste de Pensiones PM', icon: 'mdi-calculator', route: '/about' },
         //{ id: 3, title: 'Movimientos de Personal', icon: 'mdi-human-capacity-increase', route: '/home' },
       ])
-const userId = ref(localStorage.getItem('username'));
 </script>
 
 <template>
@@ -20,8 +24,8 @@ const userId = ref(localStorage.getItem('username'));
       >
         <v-list-item
           prepend-avatar="https://cutewallpaper.org/24/profile-icon-png/profile-user-svg-png-icon-free-download-24787-onlinewebfontscom.png"
-          title="Usuario Ficha"
-          :subtitle="userId"
+          :title="user.nombre"
+          :subtitle="user.ficha"
           nav
         >
           <template v-slot:append>

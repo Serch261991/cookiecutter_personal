@@ -1,25 +1,8 @@
-<script lang="ts">
+<script setup lang="ts">
 import logo from "../../../assets/logoPemex_blanco.svg";
-import store from "../../../stores";
+import { useAuthStore } from '../../../stores';
 
-export default {
-
-  name: "NarBar",
-  data() {
-    return {
-      logo: logo
-      }
-    },
-  methods: {
-    logOut() {
-      store.dispatch('auth/logout');
-      this.$router.push('/');
-    }
-  },
-};
-
-
-
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -40,9 +23,7 @@ export default {
         <template v-slot:activator="{ props }">
                 <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
               </template>
-  
               <v-list>
-
                 <v-list-item
             title="Salir"
           >
@@ -50,7 +31,7 @@ export default {
                 <v-btn
                 variant="text"
                 icon="mdi mdi-logout"
-                @click="logOut()"
+                @click="authStore.logout()"
                 ></v-btn>
             </template>
           </v-list-item>
