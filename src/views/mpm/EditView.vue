@@ -58,6 +58,15 @@ const conceptList: Ref<PaymentConceptData[]> = ref([]);
 const beneficiaryList: Ref<BeneficiaryPmData[]> = ref([]);
 const fileListComponent = ref();
 
+
+function cancel(){
+  employeePMService.cancelFixPaymentRequest(requestId).then(() => {
+    router.push({
+      name: 'dashboard',
+    });
+  });
+}
+
 function nextStep(){
 
   fixPaymentRequest.value.activityId = fixPaymentRequest.value.activityId+1;
@@ -133,7 +142,7 @@ onBeforeMount(() => {
         </v-btn-group>
         <v-divider :thickness="10" vertical />
         <v-btn-group v-if="fixPaymentRequest.activityId<6" density="compact">
-          <v-btn color="error" prepend-icon="mdi-close"> Cancelar</v-btn>
+          <v-btn @click="cancel()" color="error" prepend-icon="mdi-close"> Cancelar</v-btn>
           <v-btn v-if="fixPaymentRequest.activityId != 1" @click="previousStep()" color="warning" prepend-icon="mdi-arrow-left"> Regresar</v-btn>
           <v-btn @click="nextStep()" color="success" prepend-icon="mdi-arrow-right"> Enviar</v-btn>
         </v-btn-group>
@@ -391,7 +400,7 @@ onBeforeMount(() => {
         <v-card-text>
           <v-container>
             <v-row>
-              <strong>Fecha de ultimo pago: {{ fixPaymentRequest.paymentDate.split(' ')[0] }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+              <strong>Fecha de ultimo pago: {{ fixPaymentRequest.paymentDate }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                 Días excedentes: {{ fixPaymentRequest.numDaysMin }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Días pago: {{ fixPaymentRequest.numDays }}</strong>
             </v-row>

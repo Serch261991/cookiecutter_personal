@@ -19,23 +19,21 @@ const props = withDefaults(
 
 const documentsType1 = ref([
   { id: 0, name: '-- Seleciona --' },
-  { id: 1, name: 'Formato de Solicitud de Pagos Valorizados' },
+  { id: 1, name: 'Formato de Solicitud de Pagos Valorizados PM' },
   { id: 2, name: 'Formato SIVIPROF estatus terminado' },
   { id: 3, name: 'Orden de pago pensión PM' },
   { id: 4, name: 'Formato de alcances y adeudos' },
   { id: 5, name: 'Identificación oficial de cada beneficiario' },
   { id: 6, name: 'Pantalla de alta de acreedor' },
-  { id: 7, name: 'Formato de Solicitud de Pagos Valorizados Firmado' },
   { id: 9, name: 'INE de empleado de recolección de cheque' }
 ]);
 
 const documentsType2 = ref([
   { id: 0, name: '-- Seleciona --' },
-  { id: 1, name: 'Formato de Solicitud de Pagos Valorizados' },
+  { id: 1, name: 'Formato de Solicitud de Pagos Valorizados PM' },
   { id: 2, name: 'Formato SIVIPROF estatus terminado' },
   { id: 5, name: 'Identificación oficial de cada beneficiario' },
   { id: 6, name: 'Pantalla de alta de acreedor' },
-  { id: 7, name: 'Formato de Solicitud de Pagos Valorizados Firmado' },
   { id: 8, name: 'Formato de Acreditación de Supervivencia de beneficiarios PM' },
   { id: 9, name: 'INE de empleado de recolección de cheque' }
 ]);
@@ -184,7 +182,7 @@ onBeforeMount(() => {
         <v-list-item-subtitle>
           <strong v-if="item.key">Folio: {{item.key}}</strong>
         </v-list-item-subtitle>
-        <template v-if="user.perf" v-slot:prepend>
+        <template v-if="user.perfil.id==2" v-slot:prepend>
           <v-icon v-if="item.validationFlag=='S'" icon="mdi-check-bold" color="success" />
           <v-icon v-if="item.validationFlag=='P'" icon="mdi-information-outline" color="warning" />
           <v-icon v-if="item.validationFlag=='N'" icon="mdi-close-thick" color="error" />

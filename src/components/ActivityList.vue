@@ -1,43 +1,59 @@
 <script setup lang="ts">
-
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
-import ActivityService from "@/services/ActivityService";
-import type { ActivityData } from "@/services/ActivityService/types";
+import ActivityService from '@/services/ActivityService'
+import type { ActivityData } from '@/services/ActivityService/types'
 
 //const route = useRoute();
-const router = useRouter();
+const router = useRouter()
 
-const activityService = new ActivityService();
-const activityList: Ref<ActivityData[]> = ref([]);
+const activityService = new ActivityService()
+const activityList: Ref<ActivityData[]> = ref([])
+const activityCanceled = ref({ id: -1, name: 'Cancelados', total: 0 })
 
- onBeforeMount(() => {
+onBeforeMount(() => {
   activityService.getAll().then((response) => {
     activityList.value = response.data
-  });
- });
+  })
 
-
+  activityService.getCanceled().then((response) => {
+    activityCanceled.value = response.data
+  })
+})
 </script>
 <template>
-    <v-sheet class="w-50">
-        <v-list rounded density="compact">
-            <v-list-item border
-              v-for="activity in activityList"
-              :key="activity.id"
-              :value="activity.id"
-              @click="router.push(`/payment-adjustment/list/${activity.id}`)"
-            >
-                <template v-slot:append>
-                    <span class="badge">
-                    {{ activity.total }}
-                    </span>
-                </template>
-                <v-list-item-title> <strong>{{ activity.name }}</strong></v-list-item-title>
-            </v-list-item>
-        </v-list>
-    </v-sheet>
+  <v-sheet class="w-50">
+    <v-list rounded density="compact">
+      <v-list-item
+        border
+        v-for="activity in activityList"
+        :key="activity.id"
+        :value="activity.id"
+        @click="router.push(`/payment-adjustment/list/${activity.id}`)"
+      >
+        <template v-slot:append>
+          <span class="badge">
+            {{ activity.total }}
+          </span>
+        </template>
+        <v-list-item-title>
+          <strong>{{ activity.name }}</strong></v-list-item-title
+        >
+      </v-list-item>
+      <br />
+      <v-list-item border style="background-color: darkgray">
+        <template v-slot:append>
+          <span class="badge">
+            {{ activityCanceled.total }}
+          </span>
+        </template>
+        <v-list-item-title>
+          <strong>{{ activityCanceled.name }}</strong></v-list-item-title
+        >
+      </v-list-item>
+    </v-list>
+  </v-sheet>
 </template>
 
 <style scoped>
@@ -49,5 +65,4 @@ const activityList: Ref<ActivityData[]> = ref([]);
   border-radius: 5px;
   font-weight: bolder;
 }
-
 </style>

@@ -40,4 +40,8 @@ export default class EmployeePMService{
         return http.get(`/EmployeePm/solicitud/employee/${employeeId}`);
     }
 
+    cancelFixPaymentRequest(requestId: number){
+        return http.put(`/EmployeePm/solicitud/cancela/${requestId}`);
+    }
+
 }
