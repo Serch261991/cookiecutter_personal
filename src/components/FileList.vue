@@ -5,6 +5,36 @@ import FileService from "@/services/FileService";
 import type { AppFile } from "@/services/FileService/types";
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores';
+import { notify } from "@kyvg/vue3-notification";
+import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
+
+const createConfirm = useConfirm()
+const showSnackbar = useSnackbar()
+
+async function deleteConfirm(appFileId: number) {
+  try {
+    const isConfirmed = await createConfirm({title:'',
+                                             content: 'Esta apunto de eliminar un documento. ¿Desea continuar?', 
+                                             confirmationText: 'Aceptar', 
+                                             cancellationText:'Cancelar', 
+                                             cardProps:{width:500,
+                                                        prependIcon:'mdi-alert',
+                                                        title:'Advertencia',
+                                                        color:'yellow darken-4',
+                                                        class:"mx-auto"
+                                                      },
+                                             confirmationButtonProps:{color:"black"},
+                                            });
+
+    if (isConfirmed){
+      deleteFile(appFileId);
+    }
+    
+  }
+  catch {
+    
+  }
+}
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -62,7 +92,14 @@ const appFile = ref({
 function saveFile(){
 
   if(fileList.value.find(x => x.documentTypeId == appFile.value.documentTypeId)){
-    alert('Ya se agregó un documento de este tipo');
+    //alert('Ya se agregó un documento de este tipo');
+    notify({
+      title: "Precaución",
+      text: "Ya se agregó un documento de este tipo.",
+      type: 'warn',
+      duration: 10000,
+      speed: 1000
+    });
     return;
   }
   
@@ -82,6 +119,13 @@ function saveFile(){
     
   });
   fileService.uploadFile(file, props.requestId, 1).then(() => {
+    notify({
+      title: "Exito",
+      text: "Datos guardados correctamente.",
+      type: 'success',
+      duration: 10000,
+      speed: 1000
+    });
   });
   });
 }
@@ -113,6 +157,13 @@ function deleteFile(appFileId: number){
  fileService.deleteFileRequest(appFileId).then(() => {
     fileService.findFilesByRequest(props.requestId).then((response) => {
     fileList.value = response.data;
+    notify({
+      title: "Exito",
+      text: "Datos guardados correctamente.",
+      type: 'success',
+      duration: 10000,
+      speed: 1000
+    });
   }); 
   }); 
 }
@@ -190,7 +241,7 @@ onBeforeMount(() => {
         <template v-slot:append>
           <v-btn-group density="comfortable">
             <v-btn @click="downloadFile(item.name)" color="blue-darken-2" icon="mdi-tray-arrow-down"></v-btn>
-            <v-btn v-if="activityId==1" @click="deleteFile(item.appFileId)"  color="blue-grey-lighten-5" icon="mdi-delete"></v-btn>
+            <v-btn v-if="activityId==1" @click="deleteConfirm(item.appFileId)/*deleteFile()*/"  color="blue-grey-lighten-5" icon="mdi-delete"></v-btn>
             <v-btn v-if="activityId==2" @click="saveFileValidation(item.reqFileId, 'S');item.validationFlag='S';" color="success" icon="mdi-check-bold"></v-btn>
             <v-btn v-if="activityId==2" @click="saveFileValidation(item.reqFileId, 'N');item.validationFlag='N';" color="error" icon="mdi-close-thick"></v-btn>
           </v-btn-group>

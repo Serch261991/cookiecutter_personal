@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { fetchWrapper } from "../helpers";
 import router from "../router/index";
 import { useAlertStore } from "../stores/alert.store.js";
+import { notify } from "@kyvg/vue3-notification";
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/users`;
 
@@ -31,7 +32,14 @@ export const useAuthStore = defineStore({
                     router.push(this.returnUrl || '/main');
                 }
             } catch (error) {
-                alert("Usuario no autorizado");
+                //alert("Usuario no autorizado");
+                notify({
+                    title: "Usuario no autorizado",
+                    text: "Usted no cuenta con acceso al sistema.",
+                    type: 'error',
+                    duration: 10000,
+                    speed: 1000
+                  });
                 const alertStore = useAlertStore();
                 alertStore.error(error);                
             }
