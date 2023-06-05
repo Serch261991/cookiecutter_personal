@@ -13,6 +13,85 @@ import BeneficiaryPMService from '@/services/BeneficiaryPMService'
 import type { BeneficiaryPmData } from '@/services/BeneficiaryPMService/types'
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores';
+import { notify } from "@kyvg/vue3-notification";
+import { useConfirm} from 'vuetify-use-dialog'
+
+const createConfirm = useConfirm()
+
+async function cancelConfirm() {
+  try {
+    const isConfirmed = await createConfirm({title:'',
+                                             content: 'Esta apunto de cancelar el registro. ¿Desea continuar?', 
+                                             confirmationText: 'Aceptar', 
+                                             cancellationText:'Cancelar', 
+                                             cardProps:{width:500,
+                                                        prependIcon:'mdi-alert',
+                                                        title:'Advertencia',
+                                                        color:'white darken-4',
+                                                        class:"mx-auto"
+                                                      },
+                                             confirmationButtonProps:{color:"black"},
+                                            });
+
+    if (isConfirmed){
+      cancel();
+    }
+    
+  }
+  catch {
+    
+  }
+}
+
+async function nextStepConfirm() {
+  try {
+    const isConfirmed = await createConfirm({title:'',
+                                             content: 'Esta apunto de enviar el registro. ¿Desea continuar?', 
+                                             confirmationText: 'Aceptar', 
+                                             cancellationText:'Cancelar', 
+                                             cardProps:{width:500,
+                                                        prependIcon:'mdi-alert',
+                                                        title:'Advertencia',
+                                                        color:'white darken-4',
+                                                        class:"mx-auto"
+                                                      },
+                                             confirmationButtonProps:{color:"black"},
+                                            });
+
+    if (isConfirmed){
+      nextStep()
+    }
+    
+  }
+  catch {
+    
+  }
+}
+
+async function previousStepConfirm() {
+  try {
+    const isConfirmed = await createConfirm({title:'',
+                                             content: 'Esta apunto de regresar el registro. ¿Desea continuar?', 
+                                             confirmationText: 'Aceptar', 
+                                             cancellationText:'Cancelar', 
+                                             cardProps:{width:500,
+                                                        prependIcon:'mdi-alert',
+                                                        title:'Advertencia',
+                                                        color:'white darken-4',
+                                                        class:"mx-auto"
+                                                      },
+                                             confirmationButtonProps:{color:"black"},
+                                            });
+
+    if (isConfirmed){
+      previousStep()
+    }
+    
+  }
+  catch {
+    
+  }
+}
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -88,13 +167,31 @@ function previousStep(){
 
 function getDesignatedEmployeeName(){
   employeePMService.findNameByEmployeeId(fixPaymentRequest.value.designatedEmployeeId).then((response) => {
-    fixPaymentRequest.value.designatedEmployeeName = response.data;
+    if(response.data == "") {
+      notify({
+      title: "Advertencia",
+      text: "No se encuentra la persona.",
+      type: 'warn',
+      duration: 5000,
+      speed: 1000
+    });
+    }else {
+      fixPaymentRequest.value.designatedEmployeeName = response.data;
+    }
   });
 }
 
 function saveDesignatedEmployee(){
   employeePMService.saveDesignatedEmployee(requestId,
     fixPaymentRequest.value.designatedEmployeeId, fixPaymentRequest.value.designatedEmployeeName, fixPaymentRequest.value.designatedEmployeeAddress);
+    notify({
+      title: "Exito",
+      text: "Datos guardados correctamente.",
+      type: 'success',
+      duration: 5000,
+      speed: 1000
+    });
+
 }
 
 onBeforeMount(() => {
@@ -142,9 +239,9 @@ onBeforeMount(() => {
         </v-btn-group>
         <v-divider :thickness="10" vertical />
         <v-btn-group v-if="fixPaymentRequest.activityId<6" density="compact">
-          <v-btn @click="cancel()" color="error" prepend-icon="mdi-close"> Cancelar</v-btn>
-          <v-btn v-if="fixPaymentRequest.activityId != 1" @click="previousStep()" color="warning" prepend-icon="mdi-arrow-left"> Regresar</v-btn>
-          <v-btn @click="nextStep()" color="success" prepend-icon="mdi-arrow-right"> Enviar</v-btn>
+          <v-btn @click="cancelConfirm()" color="error" prepend-icon="mdi-close"> Cancelar</v-btn>
+          <v-btn v-if="fixPaymentRequest.activityId != 1" @click="previousStepConfirm()" color="warning" prepend-icon="mdi-arrow-left"> Regresar</v-btn>
+          <v-btn @click="nextStepConfirm()" color="success" prepend-icon="mdi-arrow-right"> Enviar</v-btn>
         </v-btn-group>
       </div>
     </div>

@@ -37,7 +37,7 @@ export const useAuthStore = defineStore({
                     title: "Usuario no autorizado",
                     text: "Usted no cuenta con acceso al sistema.",
                     type: 'error',
-                    duration: 10000,
+                    duration: 5000,
                     speed: 1000
                   });
                 const alertStore = useAlertStore();

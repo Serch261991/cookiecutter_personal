@@ -6,10 +6,9 @@ import type { AppFile } from "@/services/FileService/types";
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores';
 import { notify } from "@kyvg/vue3-notification";
-import { useConfirm, useSnackbar } from 'vuetify-use-dialog'
+import { useConfirm} from 'vuetify-use-dialog'
 
 const createConfirm = useConfirm()
-const showSnackbar = useSnackbar()
 
 async function deleteConfirm(appFileId: number) {
   try {
@@ -20,7 +19,7 @@ async function deleteConfirm(appFileId: number) {
                                              cardProps:{width:500,
                                                         prependIcon:'mdi-alert',
                                                         title:'Advertencia',
-                                                        color:'yellow darken-4',
+                                                        color:'white darken-4',
                                                         class:"mx-auto"
                                                       },
                                              confirmationButtonProps:{color:"black"},
@@ -35,6 +34,41 @@ async function deleteConfirm(appFileId: number) {
     
   }
 }
+
+async function validationFileConfirm(reqFileId: number, validationFlag: string) {
+  try {
+    const content = ref('');
+    if(validationFlag == 'N') {
+      content.value = 'Esta apunto de rechazar un archivo. ¿Desea continuar?';
+    }
+    else {
+      content.value = 'Esta apunto de validar un archivo. ¿Desea continuar?';
+    }
+
+    const isConfirmed = await createConfirm({title:'',
+                                             content: content.value, 
+                                             confirmationText: 'Aceptar', 
+                                             cancellationText:'Cancelar', 
+                                             cardProps:{width:500,
+                                                        prependIcon:'mdi-alert',
+                                                        title:'Advertencia',
+                                                        color:'white darken-4',
+                                                        class:"mx-auto"
+                                                      },
+                                             confirmationButtonProps:{color:"black"},
+                                            });
+
+    if (isConfirmed){
+      saveFileValidation(reqFileId, validationFlag);
+    }
+    
+  }
+  catch {
+    
+  }
+}
+
+
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -94,10 +128,10 @@ function saveFile(){
   if(fileList.value.find(x => x.documentTypeId == appFile.value.documentTypeId)){
     //alert('Ya se agregó un documento de este tipo');
     notify({
-      title: "Precaución",
+      title: "Advertencia",
       text: "Ya se agregó un documento de este tipo.",
       type: 'warn',
-      duration: 10000,
+      duration: 5000,
       speed: 1000
     });
     return;
@@ -123,7 +157,7 @@ function saveFile(){
       title: "Exito",
       text: "Datos guardados correctamente.",
       type: 'success',
-      duration: 10000,
+      duration: 5000,
       speed: 1000
     });
   });
@@ -147,6 +181,13 @@ function downloadFile(fileName: string) {
 
 function saveFileValidation(reqFileId: number, validationFlag: string){
  fileService.updateFileRequestValidation(reqFileId, validationFlag).then(() => {
+  notify({
+      title: "Exito",
+      text: "Datos guardados correctamente.",
+      type: 'success',
+      duration: 5000,
+      speed: 1000
+    });
     /*fileService.findFilesByRequest(props.requestId).then((response) => {
     fileList.value = response.data;
   }); */ 
@@ -161,7 +202,7 @@ function deleteFile(appFileId: number){
       title: "Exito",
       text: "Datos guardados correctamente.",
       type: 'success',
-      duration: 10000,
+      duration: 5000,
       speed: 1000
     });
   }); 
@@ -242,8 +283,8 @@ onBeforeMount(() => {
           <v-btn-group density="comfortable">
             <v-btn @click="downloadFile(item.name)" color="blue-darken-2" icon="mdi-tray-arrow-down"></v-btn>
             <v-btn v-if="activityId==1" @click="deleteConfirm(item.appFileId)/*deleteFile()*/"  color="blue-grey-lighten-5" icon="mdi-delete"></v-btn>
-            <v-btn v-if="activityId==2" @click="saveFileValidation(item.reqFileId, 'S');item.validationFlag='S';" color="success" icon="mdi-check-bold"></v-btn>
-            <v-btn v-if="activityId==2" @click="saveFileValidation(item.reqFileId, 'N');item.validationFlag='N';" color="error" icon="mdi-close-thick"></v-btn>
+            <v-btn v-if="activityId==2" @click="validationFileConfirm(item.reqFileId, 'S');item.validationFlag='S';" color="success" icon="mdi-check-bold"></v-btn>
+            <v-btn v-if="activityId==2" @click="validationFileConfirm(item.reqFileId, 'N');item.validationFlag='N';" color="error" icon="mdi-close-thick"></v-btn>
           </v-btn-group>
         </template>
       </v-list-item>

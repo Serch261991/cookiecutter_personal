@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { onBeforeMount } from 'vue'
 import EmployeePMService from '@/services/EmployeePMService'
+import { notify } from "@kyvg/vue3-notification";
 
 const router = useRouter();
 const route = useRoute();
@@ -87,6 +88,16 @@ onBeforeMount(() => {
     fixPaymentRequest.value.beginDate = employee.value.beginDate;
     fixPaymentRequest.value.typeId = typeId;
     fixPaymentRequest.value.paymentDate = employee.value.paymentDate
+  }).catch(() => {
+    notify({
+      title: "Advertencia",
+      text: "No se encuentra el empleado.",
+      type: 'warn',
+      duration: 5000,
+      speed: 1000,
+    });
+
+    setTimeout( () => router.push({ path: '/main'}), 5000);
   })
 })
 </script>

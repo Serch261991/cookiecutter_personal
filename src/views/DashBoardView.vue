@@ -136,61 +136,46 @@ const employeeId = ref(null);
       persistent
       width="500"
     >
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">Seleccione empleado y tipo de ajuste</span>
-        </v-card-title>
+      <v-card class="mx-auto" width="500" prepend-icon="mdi-file-account">
+        <template v-slot:title>
+          Seleccione empleado y tipo de ajuste
+        </template>
         <v-card-text>
           <v-container fluid>
             <v-row>
-              <v-col
-                cols="13"
-                sm="10"
-              >
-                <v-text-field
-                density="compact"
-                  label="Ficha"
-                  required
-                  v-model="employeeId"
-                ></v-text-field>
+              <v-col cols="13" >
+                <v-text-field density="compact"
+                              label="Ficha"
+                              required
+                              v-model="employeeId">
+                </v-text-field>
               </v-col>
             </v-row>
             <v-row>
-              <v-col
-                cols="13"
-                sm="10"
-              >
-              <v-select
-              clearable
-              required
-              label="Selecciona tipo de ajuste"
-              density="comfortable"
-              :items="typeReqs"
-              item-value="id"
-              item-title="name"
-              v-model="selectedType"
-  ></v-select>
-              </v-col>
-              </v-row>
-              <v-row>
-              <v-col
-                cols="13"
-                sm="7"
-              >
-                <v-btn @click="router.push(`/payments/${selectedType}/${employeeId}`)" rounded="lg" color="blue-darken-2" prepend-icon="mdi-magnify"> Buscar</v-btn>
+              <v-col cols="13" >
+                <v-select clearable
+                          required
+                          label="Selecciona tipo de ajuste"
+                          density="comfortable"
+                          :items="typeReqs"
+                          item-value="id"
+                          item-title="name"
+                          v-model="selectedType">
+                </v-select>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
+        <v-divider class="mx-4 mb-1"></v-divider>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue-darken-1"
-            variant="text"
-            @click="paymentDialog = false"
-          >
-            Cerrar
-          </v-btn>
+          <v-list-item class="w-100">
+            <template v-slot:append>
+              <div class="justify-self-end">
+                <v-btn color="blue-darken-2" variant="text" @click="paymentDialog = false" prepend-icon="mdi-close">Cerrar</v-btn>
+                <v-btn @click="router.push(`/payments/${selectedType}/${employeeId}`)" rounded="lg" color="blue-darken-2" prepend-icon="mdi-magnify"> Buscar</v-btn>
+              </div>
+            </template>
+          </v-list-item>
         </v-card-actions>
       </v-card>
     </v-dialog>
